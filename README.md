@@ -3,6 +3,17 @@
 [![DTube channel on Discord](https://img.shields.io/discord/347020217966395393.svg?logo=discord)](https://discord.gg/dtube)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
+# meteor-tool bug reproduction
+install nodejs 20 LTS, meteor@3.0.2-beta.4 , latest beta or 3.0.1
+
+git clone this repo and cd into it
+
+run `meteor npm install`
+
+run `meteor run` and head your browser to the link displayed by meteor, the page should be all white, and the html code should be there, see with "inspect" or with "show page source".
+
+on VSCodium I'm using "meteor-toolbox" extension, when running with debug option I see the error I've mentioned on the issue [#13271](https://github.com/meteor/meteor/issues/13271)
+
 # DTube App
 
 This is the main javascript application you can use on d.tube. This is probably the starting point for anyone wanting to contribute to d.tube.
