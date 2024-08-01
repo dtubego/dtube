@@ -20,7 +20,7 @@ frozeman:persistent-minimongo2
 babel-compiler@7.11.0
 underscore@1.6.4
 blaze-html-templates
-meteor-tool@3.0.0
+meteor-tool@3.0.2-beta.4
 less
 pwix:blaze-layout
 ejson
