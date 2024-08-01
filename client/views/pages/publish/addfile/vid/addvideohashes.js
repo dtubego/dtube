@@ -1,4 +1,4 @@
-const isIPFS = require('is-ipfs')
+import cids from 'cids';
 
 Template.addvideohashes.rendered = () => Template.settingsdropdown.nightMode()
 Template.addvideohashes.helpers({
@@ -80,7 +80,7 @@ Template.addvideohashes.fillHashes = function() {
 }
 
 Template.addvideohashes.isValidHash = function(hash) {
-    return isIPFS.cid(hash)
+    return cids.isCID(hash)
 }
 
 Template.addvideohashes.isValidSkylink = function(skylink) {
