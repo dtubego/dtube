@@ -88,7 +88,7 @@ Template.addvideoformfile.inputVideo = function(dt) {
           return
         } else {
           console.log('Uploaded video', result);
-          if (result.skylink && Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com')
+          if (result.skylink && Session.get('uploadEndpoint') === 'upload.dtube.app')
               Template.addvideo.addFiles('sia',{ vid: { src: result.skylink }})
         }
       })
@@ -96,7 +96,7 @@ Template.addvideoformfile.inputVideo = function(dt) {
 }
 
 Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
-    if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') return cb()
+    if (Session.get('uploadEndpoint') === 'upload.dtube.app') return cb()
     if (Session.get('remoteSettings').localhost == true) {cb(); return}
     if (Session.get('upldr')) {cb();return}
     var uploaders = Session.get('remoteSettings').upldr
@@ -153,7 +153,7 @@ Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
       : 'https://upload.dtube.app/uploadVideo?videoEncodingFormats=240p,480p,720p,1080p&sprite=true'
     let formData = new FormData()
 
-    if (Session.get('uploadEndpoint') !== 'uploader.oneloveipfs.com')
+    if (Session.get('uploadEndpoint') !== 'upload.dtube.app')
       formData.append('files',file)
 
     if ($(progressid).length) {
@@ -167,8 +167,8 @@ Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
     }
 
     // Use resumable upload API for OneLoveIPFS service
-    if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
-      let uplStat = socketio.connect('https://uploader.oneloveipfs.com/uploadStat')
+    if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
+      let uplStat = socketio.connect('https://upload.dtube.app/uploadStat')
       uplStat.on('result',(result) => {
         Session.set('addVideoStep', 'addvideoformfileuploaded')
         setTimeout(() => {
@@ -176,7 +176,7 @@ Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
             $('input[name="vid.src"]').val(result.ipfshash)
           if (result.spritehash)
             $('input[name="img.spr"]').val(result.spritehash)
-          $('input[name="gw"]').val('https://video.oneloveipfs.com')
+          $('input[name="gw"]').val('https://video.dtube.app')
           cb(null, result)
         }, 200)
       })
@@ -186,7 +186,7 @@ Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
         retryDelays: [0,3000,5000,10000,20000],
         parallelUploads: (/iPad|iPhone|iPod/.test(navigator.userAgent || navigator.vendor || window.opera) && !window.MSStream) ? 1 : 10,
         headers: {
-          'Authorization': 'Bearer '+window.btoa(JSON.stringify({keychain: true})).replace(/={1,2}$/, '')+'.'+Session.get('Upload token for uploader.oneloveipfs.com'),
+          'Authorization': 'Bearer '+window.btoa(JSON.stringify({keychain: true})).replace(/={1,2}$/, '')+'.'+Session.get('Upload token for upload.dtube.app'),
         },
         metadata: {
           type: 'videos',
@@ -204,7 +204,7 @@ Template.addvideoformfile.setBestUploadEndpoint = function (cb) {
           uplStat.emit('registerid',{
             id: idurl[idurl.length - 1],
             type: 'videos',
-            access_token: Session.get('Upload token for uploader.oneloveipfs.com'),
+            access_token: Session.get('Upload token for upload.dtube.app'),
             keychain: 'true'
           })
         }
@@ -452,8 +452,8 @@ Template.addvideoformfile.rendered = function() {
         action: 'activate',
         onChange: (value,text) => {
           $('#uploadEndpointSelection').parent().children('.icon').removeClass('check').addClass('dropdown')
-          // If uploader.oneloveipfs.com endpoint selected, check if user is in uploader whitelist
-          if (value === 'uploader.oneloveipfs.com') {
+          // If upload.dtube.app endpoint selected, check if user is in uploader whitelist
+          if (value === 'upload.dtube.app') {
             if (!Session.get('activeUsernameHive') && !Session.get('activeUsername')) {
               $('#uploadEndpointSelection').dropdown('restore defaults')
               return toastr.error(translate('UPLOAD_ENDPOINT_ERROR_NO_USERNAME'), translate('ERROR_TITLE'))

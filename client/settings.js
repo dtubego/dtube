@@ -49,7 +49,7 @@ Meteor.settings.public = {
     "snapMaxFileSizeKB": 2048,
     "upldr": ["1.btfsu","2.btfsu","3.btfsu","4.btfsu"],
     "thirdPartyUploadEndpoints": [
-      "uploader.oneloveipfs.com"
+      "upload.dtube.app"
     ],
     "localhost": false
   },

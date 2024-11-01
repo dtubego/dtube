@@ -60,8 +60,8 @@ Template.uploadformsubtitles.events({
     'click #uploadSubtitle': function() {
         var postUrl = 'https://snap1.d.tube/uploadSubtitle'
         var formData = new FormData();
-        if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
-          postUrl = 'https://uploader.oneloveipfs.com/uploadSubtitle?access_token=' + Session.get('Upload token for uploader.oneloveipfs.com')
+        if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
+          postUrl = 'https://upload.dtube.app/uploadSubtitle?access_token=' + Session.get('Upload token for upload.dtube.app')
         } else {
           formData.append('subtitle', $('#subtitleText').val());
         }
@@ -86,7 +86,7 @@ Template.uploadformsubtitles.events({
             contentType: false,
             processData: false,
             success: function (result) {
-              if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
+              if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
                 addSubtitle({
                   lang: Session.get('isAddingSubtitle'),
                   hash: result.hash
@@ -117,7 +117,7 @@ Template.uploadformsubtitles.events({
             }
         }
 
-        if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
+        if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
           ajaxUploadSubtitle.data = $('#subtitleText').val()
         }
         $.ajax(ajaxUploadSubtitle)
