@@ -30,14 +30,17 @@ Template.settings.helpers({
     CurrentAvalonAPI: function() {
       return Session.get('avalonAPI')
     },
+    CurrentDisplayNode: function() {
+      return Session.get('displayNode');
+    },
     CurrentHiveAPI: () => {
-        return Session.get('hiveAPI')
+      return Session.get('hiveAPI')
     },
     CurrentBlurtAPI: () => {
       return Session.get('blurtAPI')
     },
     CurrentSteemAPI: () => {
-        return Session.get('steemAPI')
+      return Session.get('steemAPI')
     },
     displayNodes: function() {
       return Session.get('remoteSettings').displayNodes;
@@ -75,6 +78,11 @@ Template.settings.events({
         javalon.init({api: value})
         Session.set('avalonAPI',value)
         localStorage.setItem('avalonAPI',value)
+    },
+    'change #displayNode': function(event) {
+        var value = $('#displayNode').val()
+        Session.set('displayNode',value)
+        localStorage.setItem('displayNode',value)
     },
     'change #steemApi': function(event) {
         var value = $('#steemApi').val()
