@@ -5,7 +5,8 @@ Meteor.settings.public = {
     "loadLimit": 50,
     "displayNodes": [
       // "https://snap1.d.tube",
-      "https://video.oneloveipfs.com",
+      "https://video.dtube.app",
+      "https://flk-ipfs.xyz/ipfs/",
       "https://dweb.link",
       "https://ipfs.io",
       "https://ipfs.infura.io",
