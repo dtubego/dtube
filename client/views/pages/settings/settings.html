@@ -29,6 +29,29 @@
             </div>
         </center>
         <div class="ui divider"></div>
+        <center>
+        <div class="ui form">
+            <div class="field">
+                <h2>{{ translate 'SETTINGS_DROPDOWN_IPFS_SETTINGS' }}</h2>
+            </div>
+            <div class="field">
+                <label>{{ translate 'SETTINGS_DROPDOWN_GATEWAY' }}</label>
+                <div id='displayNode' class="ui right labeled icon button red editvideo dtube pos-rel">
+                    <select id='displayNodes'>
+                        {{#each displayNodes}}
+                            {{#if equals this CurrentDisplayNode}}
+                                <option value="{{this}}" selected>{{this}}</option>
+                            {{else}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                    <i class="icon edit red" style="background:white;opacity:1;"></i>
+                </div>
+            </div>
+        </div>
+        </center>
+        <div class="ui divider"></div>
         <div class="ui form">
             <h2>{{ translate 'SETTINGS_API_CONNECTION' }}</h2>
             <div class="three fields">
