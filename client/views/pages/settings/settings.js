@@ -6,11 +6,25 @@ Template.settings.helpers({
     nsfwSetting: function() {
       return Session.get('nsfwSetting');
     },
+    blockedUsersUrlData: function() {
+      let list = Session.get('blockedUsersUrlData')
+      if (typeof list === 'string' && list !== "")
+        return JSON.parse(url).url
+      else 
+        return "{}";
+    },
     blockedUsersUrl: function() {
-      return Session.get('blockedUsersUrl') || "";
+      let url = Session.get('blockedUsersUrl')
+      if (typeof url === 'string' && url !== "")
+        return url
+      else 
+        return "";
     },
     blockedUsersList: function() {
-      return JSON.parse(Session.get('blockedUsersList'));
+      return JSON.parse(Session.get('blockedUsersList')||"[]");
+    },
+    blockedUsersUrlList: function() {
+      return Session.get('remoteSettings').blockedUsersUrlList;
     },
     censorSetting: function() {
       return Session.get('censorSetting');
@@ -20,7 +34,7 @@ Template.settings.helpers({
     },
     SteemAPIs: function() {
       return Session.get('remoteSettings').APINodes;
-    },
+    },    
     AvalonAPIs: function() {
       return Session.get('remoteSettings').AvalonAPINodes
     },
@@ -120,27 +134,30 @@ Template.settings.events({
     },
     'change #blockedUsersUrl': async function(event) {
       let value = $('#blockedUsersUrl').val();
+      let comment = $('#blockedUsersUrl').find(":selected").text();
       if (value !== "" && typeof value == "string") {
         await $.getJSON(value).then((list) => {
+          Session.set('blockedUsersUrlData', JSON.stringify({"url": value, "comment": comment}, null, 0))
           Session.set('blockedUsersUrl', value)
           Session.set('blockedUsersList', JSON.stringify(list))
           localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
           localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
+          console.log(Session.get('blockedUsersList'))
         });
       } else {
-        Session.set('blockedUsersUrl', "")
+        Session.set('blockedUsersUrl', '')
         Session.set('blockedUsersList', [])
-        localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
-        localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
-
+        localStorage.setItem("blockedUsersUrl", "")
+        localStorage.setItem("blockedUsersList", "[]")
+        console.log(await Session.get('blockedUsersList'))
       }
-      console.log(await Session.get('blockedUsersList'))
     },
     'change #blockedUsersCustomUrl': async function(event) {
       let value = $('#blockedUsersCustomUrl').val();
-      if (value !== "" && typeof value == "string") {
+      if (value !== "" && typeof value == "string" && $('#blockedUsersUrl').val() !== value) {
         await $.getJSON(value).then((list) => {
           Session.set('blockedUsersUrl', value)
+          Session.set('blockedUsersUrlData', {"url": value, "comment":"User provided"})
           Session.set('blockedUsersList', JSON.stringify(list))
           localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
           localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
