@@ -24,9 +24,11 @@ Template.videosnap.helpers({
   },
   isUserBlockedByActiveUser: function (username) {
     try {
-      let blockedUsers = JSON.parse(localStorage.getItem("blockedUsersList"))
-        if (typeof blockedUsers !== 'object') return false;
-        return blockedUsers.indexOf(username) > -1;
+      let rawBlockedUsersList = localStorage.getItem("blockedUsersList")
+      if (rawBlockedUsersList === "") return false
+      let blockedUsers = JSON.parse(rawBlockedUsersList)
+      if (typeof blockedUsers !== 'object') return false;
+      return blockedUsers.indexOf(username) > -1;
     } catch (e) {
       console.log(e.toString())
     }
