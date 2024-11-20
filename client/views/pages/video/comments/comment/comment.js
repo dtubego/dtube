@@ -9,6 +9,9 @@ Template.comment.helpers({
     isUserDMCABanned: function (username) {
         return Session.get("DMCAUsers").indexOf(username) > -1;
     },
+    isUserBlockedByActiveUser: function (username) {
+        return Session.get("blockedUsersList").indexOf(username) > -1;
+    },
     picture: function(id) {
         let username = id.split('/')[1]
         if (id.split('/')[0] == 'steem') {

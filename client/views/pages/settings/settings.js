@@ -6,6 +6,12 @@ Template.settings.helpers({
     nsfwSetting: function() {
       return Session.get('nsfwSetting');
     },
+    blockedUsersUrl: function() {
+      return Session.get('blockedUsersUrl') || "";
+    },
+    blockedUsersList: function() {
+      return JSON.parse(Session.get('blockedUsersList'));
+    },
     censorSetting: function() {
       return Session.get('censorSetting');
     },
@@ -108,9 +114,39 @@ Template.settings.events({
         localStorage.setItem("nsfwSetting", Session.get('nsfwSetting'))
     },
     'change #censorSetting': function(event) {
-        let value = $('#censorSetting').prop('selectedIndex')
-        Session.set('censorSetting', value)
-        localStorage.setItem("censorSetting", Session.get('censorSetting'))
+      let value = $('#censorSetting').prop('selectedIndex')
+      Session.set('censorSetting', value)
+      localStorage.setItem("censorSetting", Session.get('censorSetting'))
+    },
+    'change #blockedUsersUrl': async function(event) {
+      let value = $('#blockedUsersUrl').val();
+      if (value !== "" && typeof value == "string") {
+        await $.getJSON(value).then((list) => {
+          Session.set('blockedUsersUrl', value)
+          Session.set('blockedUsersList', JSON.stringify(list))
+          localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
+          localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
+        });
+      } else {
+        Session.set('blockedUsersUrl', "")
+        Session.set('blockedUsersList', [])
+        localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
+        localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
+
+      }
+      console.log(await Session.get('blockedUsersList'))
+    },
+    'change #blockedUsersCustomUrl': async function(event) {
+      let value = $('#blockedUsersCustomUrl').val();
+      if (value !== "" && typeof value == "string") {
+        await $.getJSON(value).then((list) => {
+          Session.set('blockedUsersUrl', value)
+          Session.set('blockedUsersList', JSON.stringify(list))
+          localStorage.setItem("blockedUsersUrl", Session.get('blockedUsersUrl'))
+          localStorage.setItem("blockedUsersList", Session.get('blockedUsersList'))
+        });
+      }
+      console.log(await Session.get('blockedUsersList'))
     },
     'click #changeLanguage': function() {
         Session.set('selectortype', 'languages')

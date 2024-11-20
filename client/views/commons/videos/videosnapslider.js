@@ -16,7 +16,16 @@ Template.videosnapslider.events({
 Template.videosnapslider.helpers({
   isInWatchLater: function() {
     return  WatchLater.find({_id: this._id}).fetch()
-  }
+  },
+  isUserBlockedByActiveUser: function (username) {
+    try {
+      let blockedUsers = JSON.parse(localStorage.getItem("blockedUsersList"))
+        if (typeof blockedUsers !== 'object') return false;
+        return blockedUsers.indexOf(username) > -1;
+    } catch (e) {
+      console.log(e.toString())
+    }
+  },
 })
 
 Template.videosnapslider.rendered = function () {
