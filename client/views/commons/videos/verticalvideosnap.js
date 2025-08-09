@@ -16,7 +16,17 @@ Template.verticalvideosnap.rendered = function () {
  }
 
  Template.verticalvideosnap.helpers({
-
+  isUserBlockedByActiveUser: function (username) {
+    try {
+      let rawBlockedUsersList = localStorage.getItem("blockedUsersList")
+      if (rawBlockedUsersList === "") return false
+      let blockedUsers = JSON.parse(rawBlockedUsersList)
+      if (typeof blockedUsers !== 'object') return false;
+      return blockedUsers.indexOf(username) > -1;
+    } catch (e) {
+      console.log(e.toString())
+    }
+  },
  })
 
 
