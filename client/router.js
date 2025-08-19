@@ -42,6 +42,20 @@ FlowRouter.route('/hotvideos', {
     }
 });
 
+FlowRouter.route('/p2pvideos', {
+    name: "p2pvideos",
+    action: function(params, queryParams) {
+        Session.set("currentMenu", 16)
+        Template.sidebar.selectMenu();
+        Session.set("pageTitle", 'P2P Videos')
+        Session.set('currentNonLoginPath', FlowRouter._current.path)
+        BlazeLayout.render('masterLayout', {
+            main: "p2pvideos",
+            nav: "nav",
+        });
+    }
+});
+
 FlowRouter.route('/trendingvideos', {
     name: "trendingvideos",
     action: function(params, queryParams) {

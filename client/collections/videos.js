@@ -640,6 +640,66 @@ Videos.getVideosBy = async function(type, limit, cb) {
                     }
                 })
             break;
+        case 'p2pvideos':
+            var lastAuthor = Session.get('lastCreated') ? Session.get('lastCreated').author : null
+            var lastLink = Session.get('lastCreated') ? Session.get('lastCreated').link : null
+            if (!lastLink && Session.get('lastCreated') && Session.get('lastCreated').permlink)
+                lastLink = Session.get('lastCreated').permlink
+            if (!lastLink && Session.get('lastCreated') && Session.get('lastCreated').authorperm)
+                lastLink = Session.get('lastCreated').authorperm.split('/')[1]
+            if (!Session.get('scot'))
+                avalon.getP2PVideos(lastAuthor, lastLink, function(err, result) {
+                    if (err === null || err === '') {
+                        Session.set('lastCreated', result[result.length - 1])
+                        var i, len = result.length;
+                        var videos = []
+                        for (i = 0; i < len; i++) {
+                            var video = Videos.parseFromChain(result[i])
+                            if (video) videos.push(video)
+                        }
+                        for (var i = 0; i < videos.length; i++) {
+                            videos[i].source = 'p2pvideos'
+                            videos[i]._id += 'c'
+                            try {
+                                Videos.upsert({ _id: videos[i]._id }, videos[i])
+                            } catch (err) {
+                                console.log(err)
+                                cb(err)
+                            }
+                        }
+                        cb(null)
+                    } else {
+                        console.log(err);
+                        cb(err)
+                    }
+                });
+            else
+                Scot.getDiscussionsBy('created', limit, lastAuthor, lastLink, function(err, result) {
+                    if (err === null || err === '') {
+                        Session.set('lastCreated', result[result.length - 1])
+                        var i, len = result.length;
+                        var videos = []
+                        for (i = 0; i < len; i++) {
+                            var video = Videos.parseFromChain(result[i], false, 'steem')
+                            if (video) videos.push(video)
+                        }
+                        for (var i = 0; i < videos.length; i++) {
+                            videos[i].source = 'chainByCreated'
+                            videos[i]._id += 'c'
+                            try {
+                                Videos.upsert({ _id: videos[i]._id }, videos[i])
+                            } catch (err) {
+                                console.log(err)
+                                cb(err)
+                            }
+                        }
+                        cb(null)
+                    } else {
+                        console.log(err);
+                        cb(err)
+                    }
+                })
+            break;
         case 'createdLive':
             // steem.api.getDiscussionsByCreated(query, function(err, result) {
             //   if (err === null || err === '') {
