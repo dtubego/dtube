@@ -8,6 +8,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@blurtfoundation/blurtjs": "^0.1.3",
+    "@ecies/ciphers": "^0.2.5",
     "@hiveio/hive-js": "^2.0.4",
     "@meteorjs/reify": "^0.25.4",
     "@trust/webcrypto": "^0.9.0",
