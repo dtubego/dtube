@@ -80,12 +80,12 @@ Template.player.init = function(author, link, json) {
     if (json) {
       jsoun = Template.player.toJsoun(json)
       $('.ui.embed.player').embed({
-        url: "https://emb.d.tube/#!//" + jsoun
+        url: "https://emb.dtube.app/#!//" + jsoun
         + "/" + options.join('/')
       });
     } else {
       $('.ui.embed.player').embed({
-        url: "https://emb.d.tube/#!/" + author + '/' + link
+        url: "https://emb.dtube.app/#!/" + author + '/' + link
         + "/" + options.join('/')
       });
     }
@@ -96,7 +96,7 @@ Template.player.init = function(author, link, json) {
     delete json.title
     delete json.desc
     $('.ui.embed.player').embed({
-      url: "https://emb.d.tube/#!//" + JSOUN.encode(json)
+      url: "https://emb.dtube.app/#!//" + JSOUN.encode(json)
       + "/" + options.join('/')
     });
 
@@ -110,7 +110,7 @@ Template.player.init = function(author, link, json) {
       : "message";
     eventer(messageEvent, function (e) {
       // console.log(e)
-      if (e.origin !== 'https://emb.d.tube') return;
+      if (e.origin !== 'https://emb.dtube.app') return;
       if (e.data && e.data.dur) {
         Template.addvideo.tmpVid({dur: e.data.dur})
         $('input[name="duration"]')[0].value = e.data.dur

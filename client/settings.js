@@ -9,6 +9,7 @@ Meteor.settings.public = {
       "https://flk-ipfs.xyz/ipfs/",
       "https://dweb.link",
       "https://ipfs.io",
+      "https://flk-ipfs.xyz",
       "https://ipfs.infura.io",
       "https://gateway.pinata.cloud",
       "http://127.0.0.1:8080"
