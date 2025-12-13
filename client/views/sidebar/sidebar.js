@@ -87,6 +87,8 @@ Template.sidebar.selectMenu = function() {
             break
         case 15:
             $('#feedsidebarmenu').addClass('activemenu')
+        case 16:
+            $('#p2pvideosbarmenu').addClass('activemenu')
         default:
             break;
     }

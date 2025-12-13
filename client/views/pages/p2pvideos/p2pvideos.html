@@ -1,0 +1,19 @@
+<template name='p2pvideos'>
+  <div class="ui infinite">
+    {{#if isOnMobile}}
+      <div class="ui grid" style="margin: 10px 0px">
+        <h2 class="mb-2">{{ translate 'HOME_TITLE_P2P_VIDEOS'}}</h2>
+        {{> verticalvideoband p2pVideos}}
+        <div class="sixteen wide column">
+            <div class="ui large centered inline text loader"></div>
+        </div>
+      </div>
+      {{else}}
+      <div class="ui container">
+        <h2 class="mb-2">{{ translate 'HOME_TITLE_P2P_VIDEOS'}}</h2>
+        {{> videoband p2pVideos}}
+        <div class="ui large centered inline text loader"></div>
+      </div>
+    {{/if}}
+  </div>
+</template>

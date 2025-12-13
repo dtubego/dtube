@@ -581,8 +581,8 @@ Template.publish.uploadImage = function (file, progressid, cb) {
       : 'https://snap1.d.tube/uploadImage'
     var formData = new FormData();
 
-    if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
-      postUrl = 'https://uploader.oneloveipfs.com/uploadImage?type=thumbnails&access_token=' + Session.get('Upload token for uploader.oneloveipfs.com')
+    if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
+      postUrl = 'https://upload.dtube.app/uploadImage?type=thumbnails&access_token=' + Session.get('Upload token for upload.dtube.app')
       formData.append('image',file)
     } else {
       formData.append('files', file)
@@ -613,7 +613,7 @@ Template.publish.uploadImage = function (file, progressid, cb) {
           result = JSON.parse(result)
         $(progressid).hide()
 
-        if (Session.get('uploadEndpoint') === 'uploader.oneloveipfs.com') {
+        if (Session.get('uploadEndpoint') === 'upload.dtube.app') {
           $('input[name="snaphash"]').val(result.imghash)
           Session.set('overlayHash',result.imghash)
           $('#uploadSnap').removeClass('disabled')

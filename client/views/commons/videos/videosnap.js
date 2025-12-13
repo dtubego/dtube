@@ -21,7 +21,18 @@ Template.videosnap.helpers({
     if (!this || !this.votes)
       return 0
     return this.votes.length
-  }
+  },
+  isUserBlockedByActiveUser: function (username) {
+    try {
+      let rawBlockedUsersList = localStorage.getItem("blockedUsersList")
+      if (rawBlockedUsersList === "") return false
+      let blockedUsers = JSON.parse(rawBlockedUsersList)
+      if (typeof blockedUsers !== 'object') return false;
+      return blockedUsers.indexOf(username) > -1;
+    } catch (e) {
+      console.log(e.toString())
+    }
+  },
 })
 
 Template.videosnap.rendered = function () {

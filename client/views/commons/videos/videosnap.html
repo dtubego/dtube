@@ -1,5 +1,6 @@
 <template name='videosnap'>
   {{#unless isVideoHidden this}}
+  {{#unless isUserBlockedByActiveUser author}}
   <div class='videosnap wid-ful {{#if isVideoBlurred this}}blur{{/if}}' style="max-width:210px;">
     <a href='/v/{{author}}/{{link}}' title='{{title}}'>
       <div id='snaphover wid-ful' class='videosnapsnap' style="height:118px;">
@@ -70,5 +71,6 @@
     </div>
     {{ticker}}
   </div>
+  {{/unless}}
   {{/unless}}
 </template>

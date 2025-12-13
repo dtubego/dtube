@@ -6,6 +6,7 @@ Meteor.settings.public = {
     "displayNodes": [
       // "https://snap1.d.tube",
       "https://video.dtube.app",
+      "https://flk-ipfs.xyz/ipfs/",
       "https://dweb.link",
       "https://ipfs.io",
       "https://flk-ipfs.xyz",
@@ -26,6 +27,16 @@ Meteor.settings.public = {
       "https://avalon.d.tube",
       "http://localhost:3001",
       "https://testnet.dtube.fso.ovh",
+    ],
+    "blockedUsersUrlList": [
+      {
+        "url": "",
+        "comment": "None"
+      },
+      {
+        "url": "https://gist.githubusercontent.com/MrFasolo97/115e514e5217960c84a38a74147e060c/raw/a638035b4fe95c2a491a33e4824864a4af4fde13/blocked_users.json",
+        "comment": "fasolo97\'s managed"
+      }
     ],
     "HiveAPINodes": [
       "https://anyx.io",
@@ -50,7 +61,7 @@ Meteor.settings.public = {
     "snapMaxFileSizeKB": 2048,
     "upldr": ["1.btfsu","2.btfsu","3.btfsu","4.btfsu"],
     "thirdPartyUploadEndpoints": [
-      "uploader.oneloveipfs.com"
+      "upload.dtube.app"
     ],
     "localhost": false
   },
