@@ -34,13 +34,13 @@
 ---------------------*/
 
 /* Default */
-@import "@{themesFolder}/default/@{type}s/@{element}.variables.import.less";
+@import (multiple) "@{themesFolder}/default/@{type}s/@{element}.variables.import.less";
 
 /* Packaged Theme */
-@import (optional) "@{themesFolder}/@{theme}/@{type}s/@{element}.variables.import.less";
+@import (multiple, optional) "@{themesFolder}/@{theme}/@{type}s/@{element}.variables.import.less";
 
 /* Site Theme */
-@import (optional) "@{siteFolder}/@{type}s/@{element}.variables.import.less";
+@import (multiple, optional) "@{siteFolder}/@{type}s/@{element}.variables.import.less";
 
 
 /*******************************
@@ -52,7 +52,7 @@
 -------------------*/
 
 .loadFonts() when (@importGoogleFonts) {
-  @import url('@{googleProtocol}fonts.googleapis.com/css?family=@{googleFontRequest}');
+  /* @import url('https://fonts.googleapis.com/css?family=Roboto:400,900,700,500,300,100,400italic,700italic&subset=latin'); */
 }
 
 /*------------------
