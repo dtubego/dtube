@@ -24,7 +24,7 @@ Template.verticalvideosnap.rendered = function () {
       if (typeof blockedUsers !== 'object') return false;
       return blockedUsers.indexOf(username) > -1;
     } catch (e) {
-      console.log(e.toString())
+      console.log(e)
     }
   },
  })

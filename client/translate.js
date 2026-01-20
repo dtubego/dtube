@@ -4,13 +4,15 @@ var jsonTranslateDef = null
 
 window.loadDefaultLang = function(cb = function(){}){
   var url = './DTube_files/lang/en/en-US.json'
-  // if (window.location.hostname == 'localhost' && window.location.port == '3000')
-  // url = url.replace('https://d.tube', 'http://localhost:3000')
-  $.get(url, function(json, result) {
-    if (result == 'success') {
-      jsonTranslateDef = json
-      cb()
-    }
+  $.ajax({
+    url,
+    method: 'GET'
+  })
+  .done(function(json) {
+    jsonTranslateDef = json
+  })
+  .always(function() {
+    cb()
   })
 }
 window.loadLangAuto = function(cb) {
@@ -29,13 +31,15 @@ window.loadJsonTranslate = function(culture, cb = function(){}){
 
   UserSettings.set('language', culture)
   var url = './DTube_files/lang/'+Meteor.settings.public.lang[culture].path
-  // if (window.location.hostname == 'localhost' && window.location.port == '3000')
-  // url = url.replace('https://d.tube', 'http://localhost:3000')
-  $.get(url, function(json, result) {
-    if (result == 'success') {
-      Session.set('jsonTranslate', json)
-      cb()
-    }
+  $.ajax({
+    url,
+    method: 'GET'
+  })
+  .done(function(json) {
+    Session.set('jsonTranslate', json)
+  })
+  .always(function() {
+    cb()
   })
 }
 

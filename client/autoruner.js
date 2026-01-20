@@ -1,6 +1,6 @@
+import { Tracker } from 'meteor/tracker'
 // controls the page title display
-
-Deps.autorun(function(){
+Tracker.autorun(function(){
   var title = Meteor.settings.public.appName
   if (Session.get('scot') && Session.get('scot').websiteTitle)
     title = Session.get('scot').websiteTitle

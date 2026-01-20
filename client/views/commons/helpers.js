@@ -596,7 +596,7 @@ Template.registerHelper('censorshipLevel', function (video) {
 })
 
 Template.registerHelper('isVideoHidden', function (video) {
-    var censor = UI._globalHelpers.censorshipLevel(video)
+    var censor = Blaze._globalHelpers.censorshipLevel(video)
     if (censor == -1)
         return true
     if (censor == 1 && parseInt(Session.get('censorSetting')) === 2)
@@ -608,7 +608,7 @@ Template.registerHelper('isVideoHidden', function (video) {
 })
 
 Template.registerHelper('isVideoBlurred', function (video) {
-    var censor = UI._globalHelpers.censorshipLevel(video)
+    var censor = Blaze._globalHelpers.censorshipLevel(video)
     if (censor == 1 && parseInt(Session.get('censorSetting')) === 1)
         return true
     if (censor == 2 && parseInt(Session.get('nsfwSetting')) === 1)

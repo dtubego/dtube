@@ -10,6 +10,7 @@ Template.comment.helpers({
         return Session.get("DMCAUsers").indexOf(username) > -1;
     },
     isUserBlockedByActiveUser: function (username) {
+        if(!Session.get("blockedUsersList")) return false;
         return Session.get("blockedUsersList").indexOf(username) > -1;
     },
     picture: function(id) {

@@ -47,7 +47,7 @@ getBranch()
         result.commit = _commit;
     })
     .then(function(){
-        if(result.branch == "production") {
+        if(result.branch == "production" || result.branch == "beta") {
             var fileContent = JSON.stringify(result,null,2);
 
             var pathToFile = __dirname+"/../public/version.json";
