@@ -7,7 +7,7 @@ Meteor.settings.public = {
       // "https://snap1.d.tube",
       "https://video.dtube.app",
       "https://flk-ipfs.xyz/ipfs/",
-      "https://dweb.link",
+      "https://dweb.link/ipfs/",
       "https://ipfs.io",
       "https://flk-ipfs.xyz",
       "https://ipfs.infura.io",
