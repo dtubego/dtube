@@ -1,3 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700');
+
+html, body {
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll from sidebar push */
+    transform: none !important; /* STRICTLY prevent transform on body to protect fixed elements */
+    -webkit-transform: none !important;
+    position: static !important; /* Ensure body itself doesn't become a positioned ancestor */
+}
+
+/* Ensure topbar does not move */
+#app-topbar-container {
+    transform: none !important;
+    -webkit-transform: none !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+/* Force text alignment for search input */
+#dsearch {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+#dsearchmobile {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
 .block-header {
     margin-bottom: 5px;
 }
@@ -69,6 +101,7 @@ body.nightmode .pusher .ui.divider.noborder {
     padding: 65px 0em 4em 0em;
     width: 100%;
     transition: margin-left 0.3s ease;
+    margin-left: 0;
 }
 
 .article.mainsided {
@@ -76,7 +109,7 @@ body.nightmode .pusher .ui.divider.noborder {
 }
 
 .article.shifted {
-    margin-left: var(--sidebar-shift, 210px);
+    margin-left: 212px !important; /* Width of the sidebar */
 }
 
 .icon .menuIcon {

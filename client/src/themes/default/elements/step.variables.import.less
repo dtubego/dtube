@@ -99,7 +99,8 @@
 
 @attachedHorizontalOffset: -@borderWidth;
 @attachedVerticalOffset: 0;
-@attachedWidth: ~"calc(100% + "-@attachedHorizontalOffset * 2~")";
+@negAttachedHorizontalOffset: (@attachedHorizontalOffset * -1);
+@attachedWidth: ~"calc(100% + "@negAttachedHorizontalOffset~" * 2)";
 
 @orderedFontFamily: inherit;
 @orderedFontWeight: @bold;

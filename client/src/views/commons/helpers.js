@@ -692,7 +692,7 @@ Template.registerHelper('isSubscribedTo', function (following) {
 })
 
 Template.registerHelper('getEmbedCode', function (author, permlink) {
-    var code = '<iframe width="560" height="315" src="https://emb.d.tube/#!/@@@author@@@/@@@permlink@@@" frameborder="0" allowfullscreen></iframe>'
+    var code = '<iframe width="560" height="315" src="https://emb.dtube.app/#!/@@@author@@@/@@@permlink@@@" frameborder="0" allowfullscreen></iframe>'
     code = code.replace('@@@author@@@', author)
     code = code.replace('@@@permlink@@@', permlink)
     return code

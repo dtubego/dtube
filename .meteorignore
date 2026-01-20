@@ -1,4 +1,10 @@
-tasks
-gulpfile.js
-src
-build
+/tasks
+/gulpfile.js
+/src
+/build
+/client/src/tasks
+/client/src/tasks/**
+/client/src/docs/**
+/client/src/gulpfile.js
+/client/src/watch.js
+/client/src/clean.js

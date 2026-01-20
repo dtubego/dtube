@@ -17,6 +17,7 @@
     "bufferutil": "^4.0.1",
     "caniuse-lite": "^1.0.30001593",
     "cheerio": "^1.0.0-rc.2",
+    "cids": "^1.1.9",
     "dtube-autolinker": "1.4.3",
     "eccrypto": "^1.1.6",
     "electron": "^31.3.1",

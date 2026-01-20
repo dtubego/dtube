@@ -1,16 +1,16 @@
 <template name='notificationdropdown'>
-    <div class="ui item top right floated dropdown dropdownnotification">
+    <div class="ui item top right floated dropdown dropdownnotification" style="display: flex; align-items: center; padding: 0 15px;">
       {{#if notificationsUnseen}}
         {{#if isOnMobile}}
-          <i id="notification" class="alarm icon" style='color:red; font-size:1.3em; margin:0;'></i>
+          <i id="notification" class="alarm icon" style='color:red; font-size:1.5em; margin:0;'></i>
         {{else}}
-          <i id="notification" class="alarm icon" style='font-size:1.3em; margin:0;'></i>
+          <i id="notification" class="alarm icon" style='font-size:1.5em; margin:0;'></i>
           <span id="notificationcount" style="background:red;font-weight:800;" class="notificationdtube">
             {{notificationsUnseen}}
           </span>
         {{/if}}
       {{else}}
-        <i id="notification" class="alarm icon" style='font-size:1.3em; margin:0;'></i>
+        <i id="notification" class="alarm icon" style='font-size:1.5em; margin:0;'></i>
       {{/if}}
       {{#unless isOnMobile}}
         <div id="notificationmenu" class="menu" style="overflow-y: auto;max-height: 600px;margin-top:0px; min-width: 400px;">

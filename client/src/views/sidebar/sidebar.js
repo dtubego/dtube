@@ -1,6 +1,19 @@
 Template.sidebar.rendered = function() {
     Template.settingsdropdown.nightMode();
     Template.sidebar.selectMenu();
+    
+    // Ensure sidebar is initialized with the correct context to prevent topbar movement
+    if (/Mobi/.test(navigator.userAgent)) {
+        $("#sidebar")
+            .sidebar('setting', 'context', '#sidebar-context')
+            .sidebar('setting', 'detachable', false)
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('setting', 'dimPage', true)
+            .sidebar('setting', 'closable', true);
+    } else {
+        // On desktop, initialize and show the sidebar (half state)
+        Template.sidebar.half();
+    }
 }
 
 Template.sidebar.events({
@@ -28,6 +41,7 @@ Template.sidebar.resetActiveMenu = function() {
     $('#electionsidebarmenu').removeClass('activemenu')
     $('#settingssidebarmenu').removeClass('activemenu')
     $('#helpsidebarmenu').removeClass('activemenu')
+    $('#p2psidebarmenu').removeClass('activemenu')
     Template.settingsdropdown.nightMode();
 }
 
@@ -45,6 +59,9 @@ Template.sidebar.selectMenu = function() {
             break;
         case 4:
             $('#hotsidebarmenu').addClass('activemenu')
+            break;
+        case 16:
+            $('#p2psidebarmenu').addClass('activemenu')
             break;
         case 5:
             $('#trendingsidebarmenu').addClass('activemenu')
@@ -84,30 +101,73 @@ Template.sidebar.selectMenu = function() {
 }
 
 Template.sidebar.half = function() {
-    $('#sidebar').css("z-index", 10)
-    $('.pusher').attr('style', 'transform: translate3d(105px, 0, 0) !important;')
+    // Destroy existing sidebar to ensure clean state and correct context
+    if ($("#sidebar").data('module-sidebar')) {
+        $("#sidebar").sidebar('destroy');
+    }
+    
+    // Ensure context exists, default to body if not found (though it should be there)
+    var context = $('#sidebar-context').length > 0 ? '#sidebar-context' : 'body';
+    
     $("#sidebar")
+        .sidebar('setting', 'context', context)
+        .sidebar('setting', 'detachable', false)
+        .sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
+        .sidebar('setting', 'onChange', function() {
+            // Manual check to toggle content shift class
+            // We use a timeout to let the sidebar state update
+            setTimeout(function() {
+                if ($('#sidebar').sidebar('is visible')) {
+                    $('.article').addClass('shifted');
+                } else {
+                    $('.article').removeClass('shifted');
+                }
+            }, 50);
+        })
         .sidebar('show')
 }
 
 Template.sidebar.full = function() {
-    $('.pusher').attr('style', 'transform: translate3d(212px, 0, 0) !important')
+    if ($("#sidebar").data('module-sidebar')) {
+        $("#sidebar").sidebar('destroy');
+    }
+
+    var context = $('#sidebar-context').length > 0 ? '#sidebar-context' : 'body';
+
     $("#sidebar")
+        .sidebar('setting', 'context', context)
+        .sidebar('setting', 'detachable', false)
+        .sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
+        .sidebar('setting', 'onChange', function() {
+            setTimeout(function() {
+                if ($('#sidebar').sidebar('is visible')) {
+                    $('.article').addClass('shifted');
+                } else {
+                    $('.article').removeClass('shifted');
+                }
+            }, 50);
+        })
         .sidebar('show')
 }
 
 Template.sidebar.empty = function() {
-    $('.pusher').attr('style', '')
     $("#sidebar").sidebar('hide')
+    $('.article').removeClass('shifted');
 }
 
 Template.sidebar.mobile = function() {
-    $('.pusher').attr('style', 'transform: translate3d(0px, 0, 0) !important')
+    if ($("#sidebar").data('module-sidebar')) {
+        $("#sidebar").sidebar('destroy');
+    }
+
     $("#sidebar")
+        .sidebar('setting', 'context', '#sidebar-context')
+        .sidebar('setting', 'detachable', false)
+        .sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', true)
         .sidebar('setting', 'closable', true)
         .sidebar('toggle')

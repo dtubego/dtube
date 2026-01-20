@@ -20,7 +20,8 @@
 @bottomMargin: @headerBottomMargin;
 @margin: @topMargin 0em @bottomMargin;
 
-@firstMargin: -@lineHeightOffset;
+/* Fix: avoid unary minus operation that crashed the LESS compiler */
+@firstMargin: (@lineHeightOffset * -1);
 @lastMargin: 0em;
 @horizontalPadding: 0em;
 @verticalPadding: 0em;

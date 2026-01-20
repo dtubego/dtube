@@ -1,5 +1,8 @@
 import './buffer';
+import './collections/version.js';
 import './router.js';
+import './translate.js';
+import './src/collections/settings.js';
 import steem from 'steem'
 import hive from '@hiveio/hive-js'
 import blurt from '@blurtfoundation/blurtjs'
@@ -16,6 +19,9 @@ if (location.pathname === '/' && (!location.hash || location.hash === '#')) {
 }
 
 console.log('Starting DTube APP')
+$.get("/version.json", function(json, result) {
+    window.Version = json;
+});
 
 $.get("https://raw.githubusercontent.com/dtubego/dmca/master/dmca.json", function(json, result) {
   if (result == 'success') {
@@ -25,15 +31,41 @@ $.get("https://raw.githubusercontent.com/dtubego/dmca/master/dmca.json", functio
 });
 
 FlowRouter.wait();
-Meteor.startup(function(){
-  if (Version.find().count() > 0){
-    Version.remove({});
+
+if (typeof UserSettings === 'undefined') {
+  UserSettings = new Mongo.Collection(null)
+  UserSettings.set = function(key, value) {
+    UserSettings.remove({
+      k: key,
+      u: Session.get('activeUsername')
+    })
+    var obj = {
+      k: key,
+      v: value,
+      u: Session.get('activeUsername')
+    }
+    UserSettings.insert(obj)
   }
-  $.get("/version.json").then(async (version) => {
-    await Version.insert(version)
-    console.log('DTube APP Started')
-    console.log('Version: ', await Version.findOne({}))
+  UserSettings.get = function(key) {
+    var setting = UserSettings.findOne({k: key, u: Session.get('activeUsername')})
+    if (!setting) return 0
+    return setting.v
+  }
+}
+
+Meteor.startup(function(){
+  loadDefaultLang(function() {
+    loadLangAuto(function() {
+      try {
+        FlowRouter.initialize({hashbang: true}, function() {});
+      } catch (e) {}
+      $(window).on('hashchange', function() {
+        FlowRouter.go(window.location.hash);
+      });
+    });
   });
+  console.log('DTube APP Started')
+  console.log('Version: ', window.Version)
   window.hive = hive
   window.steem = steem
   window.blurt = blurt
