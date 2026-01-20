@@ -3,6 +3,8 @@ build
 run.sh
 node_modules/
 package-lock.json
-
+dist
 version.desktop
 .vercel
+jsconfig.js
+convert.py
