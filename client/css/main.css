@@ -16,6 +16,26 @@
     margin: 25px 0;
 }
 
+.ui.main.menu.fixed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+}
+
+.ui.overlay.sidebar {
+    transition: transform 0.3s ease !important;
+}
+
+.ui.push.sidebar {
+    transition: transform 0.3s ease !important;
+}
+
+.pushable .pusher {
+    transition: transform 0.3s ease;
+}
+
 .pusher .ui.divider.noborder {
     border-top: none;
 }
@@ -48,10 +68,15 @@ body.nightmode .pusher .ui.divider.noborder {
 .article {
     padding: 65px 0em 4em 0em;
     width: 100%;
+    transition: margin-left 0.3s ease;
 }
 
 .article.mainsided {
     padding: 65px 0em 4em 210px!important;
+}
+
+.article.shifted {
+    margin-left: var(--sidebar-shift, 210px);
 }
 
 .icon .menuIcon {
@@ -98,12 +123,12 @@ body.nightmode .pusher .ui.divider.noborder {
 
 .sidebartoggleicon {
     padding: 0 !important;
-    margin: 0 22px 0 22px !important;
+    margin: 0 22px 0 12px !important;
 }
 
 .mobiletopbar .sidebartoggleicon {
     padding: 0 !important;
-    margin: 0 20px 0 20px !important;
+    margin: 0 20px 0 10px !important;
 }
 
 #sidebar .icon.dtubesidebaricon {

@@ -95,31 +95,34 @@ Template.sidebar.selectMenu = function() {
 }
 
 Template.sidebar.half = function() {
-    $('#sidebar').css("z-index", 10)
-    $('.pusher').attr('style', 'transform: translate3d(105px, 0, 0) !important;')
     $("#sidebar")
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
         .sidebar('show')
+    $('.article').css('--sidebar-shift', '212px').addClass('shifted')
 }
 
 Template.sidebar.full = function() {
-    $('.pusher').attr('style', 'transform: translate3d(212px, 0, 0) !important')
     $("#sidebar")
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
         .sidebar('show')
+    $('.article').css('--sidebar-shift', '212px').addClass('shifted')
 }
 
 Template.sidebar.empty = function() {
-    $('.pusher').attr('style', '')
     $("#sidebar").sidebar('hide')
+    $('.article').removeClass('shifted').css('--sidebar-shift', '0px')
 }
 
 Template.sidebar.mobile = function() {
-    $('.pusher').attr('style', 'transform: translate3d(0px, 0, 0) !important')
     $("#sidebar")
         .sidebar('setting', 'dimPage', true)
         .sidebar('setting', 'closable', true)
         .sidebar('toggle')
+    if ($('#sidebar').sidebar('is visible')) {
+        $('.article').css('--sidebar-shift', '162px').addClass('shifted')
+    } else {
+        $('.article').removeClass('shifted').css('--sidebar-shift', '0px')
+    }
 }
