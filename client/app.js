@@ -1,9 +1,19 @@
 import './buffer';
+import './router.js';
 import steem from 'steem'
 import hive from '@hiveio/hive-js'
 import blurt from '@blurtfoundation/blurtjs'
 import jQuery from 'jquery';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { BlazeLayout } from 'meteor/pwix:blaze-layout';
+window.$ = jQuery;
+window.jQuery = jQuery;
+window.FlowRouter = FlowRouter;
 import fetch from 'unfetch';
+
+if (location.pathname === '/' && (!location.hash || location.hash === '#')) {
+  location.replace('/#!/');
+}
 
 console.log('Starting DTube APP')
 
@@ -134,4 +144,5 @@ Meteor.startup(function(){
   // ethereum metamask
   if (window.ethereum)
     Session.set('hasMetamask', true)
+
 })

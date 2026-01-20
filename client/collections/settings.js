@@ -1,3 +1,4 @@
+import '../translate.js';
 // This is for persistent client-side settings !
 
 UserSettings = new Mongo.Collection(null)
@@ -7,6 +8,7 @@ userSettingsObserver = new PersistentMinimongo2(UserSettings, 'usersettings', fu
         loadLangAuto(function() {
             console.log('Loaded languages')
             // start router
+            console.log('Initializing router')
             FlowRouter.initialize({hashbang: true}, function() {
                 console.log('Router initialized')
             });
