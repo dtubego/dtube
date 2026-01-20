@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "build": ""
+    "build": "",
+    "update-version": "git rev-parse --short HEAD | awk '{print \"DTubeVersion = \\\"\" $1 \"\\\";\"}' > client/lib/version.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",

@@ -16,6 +16,12 @@ Template.sidebar.rendered = function() {
     }
 }
 
+Template.sidebar.helpers({
+    version: function() {
+        return (typeof DTubeVersion !== 'undefined') ? DTubeVersion : 'dev';
+    }
+});
+
 Template.sidebar.events({
     'click .dtubesidebarmenu': function() {
         if (/Mobi/.test(navigator.userAgent)) {

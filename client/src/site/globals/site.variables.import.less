@@ -18,7 +18,7 @@
 @googleSubset      : 'latin';
 
 @googleProtocol    : 'https://';
-@googleFontRequest : '@{googleFontName}:@{googleFontSizes}&subset=@{googleSubset}';
+@googleFontRequest : '@{googleFontName}:@{googleFontSizes}&subset=@{googleSubset}&display=swap';
 
 /*-------------------
       Base Sizes
@@ -46,11 +46,13 @@
     Brand Colors
 --------------------*/
 
-@primaryColor        : @blue;
-@secondaryColor      : @red;
+@primaryColor        : #223154; // Navy Blue
+@secondaryColor      : #F01A30; // Uni Red
 
-@lightPrimaryColor   : @lightBlue;
-@lightSecondaryColor : @lightRed;
+@lightPrimaryColor   : lighten(#223154, 20);
+@lightSecondaryColor : lighten(#F01A30, 20);
+@darkPrimaryColor    : darken(#223154, 20);
+@darkSecondaryColor  : darken(#F01A30, 20);
 
 /*--------------
   Page Heading

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700&display=swap');
 
 html, body {
     height: 100%;
@@ -30,6 +30,12 @@ html, body {
     padding-left: 10px !important;
 }
 
+@media (min-width: 769px) {
+    #dsearchmobile {
+        display: none !important;
+    }
+}
+
 .block-header {
     margin-bottom: 5px;
 }
@@ -57,15 +63,18 @@ html, body {
 }
 
 .ui.overlay.sidebar {
-    transition: transform 0.3s ease !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
 }
 
 .ui.push.sidebar {
-    transition: transform 0.3s ease !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
 }
 
 .pushable .pusher {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
 .pusher .ui.divider.noborder {
@@ -81,8 +90,8 @@ body.nightmode .pusher .ui.divider.noborder {
 }
 
 .padding-side {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 14px;
+    padding-right: 14px;
 }
 
 .scaledropdown {
