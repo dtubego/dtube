@@ -1,4 +1,12 @@
 import { Template } from "meteor/templating";
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { BlazeLayout } from 'meteor/pwix:blaze-layout';
+
+FlowRouter.triggers.enter([function(context) {
+    try {
+        console.log('Route enter', context.route && context.route.name, context.path);
+    } catch (e) {}
+}]);
 
 FlowRouter.route('/', {
     name: "home",
@@ -393,7 +401,8 @@ FlowRouter.route('/coin', {
     }
 })
 
-FlowRouter.notFound = {
+FlowRouter.route('*', {
+    name: "notFound",
     action: function() {
         BlazeLayout.render('masterLayout', {
             main: "pageNotFound",
@@ -401,4 +410,4 @@ FlowRouter.notFound = {
         });
         Session.set("pageTitle", translate('ERROR_PAGE_NOT_FOUND'))
     }
-};
+})
