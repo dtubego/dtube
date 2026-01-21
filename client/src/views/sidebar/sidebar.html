@@ -93,9 +93,6 @@
           <span class="dtubesidebartitle">{{ translate 'SIDEBAR_HELP'}}</span>
         </div>
       </a>
-      <div class="menuitem dtubesidebarmenu dsp-inh pdg-non text-right" style="font-size: 0.8em; color: #223154; padding-right: 20px;">
-          Ver: {{version}}
-      </div>
     </nav>
     <div class="ui divider"></div>
 
@@ -182,6 +179,9 @@
         <a href='https://avalonblocks.com/#/' target="_blank" id="discord">
           <span class="sidebarlink">{{ translate 'SIDEBAR_EXPLORER'}}</span>
         </a>
+        <div class="menuitem dtubesidebarmenu dsp-inh pdg-non" style="font-weight: bold; font-size: 0.9em; color: #223154; margin-top: 15px; text-align: center;">
+            Ver: {{ shortCommit }}
+        </div>
       </div>
       {{/if}}
     {{/if}}

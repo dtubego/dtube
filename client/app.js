@@ -19,9 +19,7 @@ if (location.pathname === '/' && (!location.hash || location.hash === '#')) {
 }
 
 console.log('Starting DTube APP')
-$.get("/version.json", function(json, result) {
-    window.Version = json;
-});
+window.Version = require("./lib/version.js").DTubeVersion;
 
 $.get("https://raw.githubusercontent.com/dtubego/dmca/master/dmca.json", function(json, result) {
   if (result == 'success') {

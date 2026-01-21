@@ -47,23 +47,17 @@ getBranch()
         result.commit = _commit;
     })
     .then(function(){
-        if(result.branch == "production" || result.branch == "beta") {
-            var fileContent = JSON.stringify(result,null,2);
-
-            var pathToFile = __dirname+"/../public/version.json";
+        if(result.branch == "production" || result.branch == "beta" || result.branch == "meteor3") {
+            var pathToFile = __dirname+"/../client/lib/version.js";
             console.log("path normalized: "+ path.normalize(pathToFile));
-            if (fs.existsSync(pathToFile)) {
-                fs.writeFile(pathToFile, fileContent , function(err) {
-                    if(err) {
-                        console.log(err);
-                    } else {
-                        console.log("The file was saved!");
-                    }
-                });
-            }else{
-                console.log("Cannot find file : " + pathToFile);
-            }
+            fs.writeFile(pathToFile, "export const DTubeVersion = {commit: '"+result.commit+"', branch: '"+result.branch+"', timestamp: '"+result.timestamp+"'};" , function(err) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    console.log("The file was saved!");
+                }
+            });
         } else {
-            console.log("Skipping branch "+result.branch+" for version.json generation.");
+            console.log("Skipping branch "+result.branch+" for version.js generation.");
         }
     })
