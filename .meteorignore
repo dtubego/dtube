@@ -1,6 +1,5 @@
 /tasks
 /gulpfile.js
-/src
 /build
 /client/src/tasks
 /client/src/tasks/**
