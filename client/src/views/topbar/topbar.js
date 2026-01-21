@@ -20,30 +20,11 @@ Template.topbar.helpers({
 
 Template.topbar.events({
   'click .sidebartoggleicon': function (event, instance) {
-    //Session.set('isSidebarOpen', !$('#sidebar').sidebar('is visible'))
-    if ($('#sidebar').sidebar('is visible')) {
-      Template.sidebar.empty()
-    } else {
-      if (FlowRouter.current().route.name == 'video') {
-        Template.sidebar.full()
-      } else {
-        Template.sidebar.half()
-      }
-
-    }
+    Template.sidebar.toggle();
   },
   'touchend .sidebartoggleicon': function (event, instance) {
-    //Session.set('isSidebarOpen', !$('#sidebar').sidebar('is visible'))
-    if ($('#sidebar').sidebar('is visible')) {
-      Template.sidebar.empty()
-    } else {
-      if (FlowRouter.current().route.name == 'video') {
-        Template.sidebar.full()
-      } else {
-        Template.sidebar.half()
-      }
-
-    }
+    if (Session.get('sidebarOpen') === undefined) Session.set('sidebarOpen', true);
+    Session.set('sidebarOpen', !Session.get('sidebarOpen'));
   },
   'keyup #dsearch': function (evt) {
     if (evt.key == 'Enter') return

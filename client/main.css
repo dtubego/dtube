@@ -1,25 +1,34 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900italic,700italic&display=swap');
 
 html, body {
     height: 100%;
-    overflow-x: hidden; /* Prevent horizontal scroll from sidebar push */
-    transform: none !important; /* STRICTLY prevent transform on body to protect fixed elements */
+    overflow-x: hidden;
+    transform: none !important;
     -webkit-transform: none !important;
-    position: static !important; /* Ensure body itself doesn't become a positioned ancestor */
+    position: static !important;
+    scroll-behavior: smooth;
 }
 
-/* Ensure topbar does not move */
-#app-topbar-container {
+#dtube-desktop-topbar {
     transform: none !important;
     -webkit-transform: none !important;
     position: fixed !important;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
+    width: 100%;
+    display: flex;
+    flex: 0;
+    z-index: 99999;
+    padding: 0 !important;
+    margin: 0 0px 0 0px !important;
 }
 
-/* Force text alignment for search input */
+body.pushable, .pushable {
+    transform: none !important;
+    -webkit-transform: none !important;
+}
+
 #dsearch {
     text-align: left !important;
     padding-left: 10px !important;
@@ -30,8 +39,21 @@ html, body {
     padding-left: 10px !important;
 }
 
+#mobilesearch {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    #mobilesearch {
+        display: block !important;
+    }
+}
+
 @media (min-width: 769px) {
     #dsearchmobile {
+        display: none !important;
+    }
+    #mobilesearch {
         display: none !important;
     }
 }
@@ -109,16 +131,16 @@ body.nightmode .pusher .ui.divider.noborder {
 .article {
     padding: 65px 0em 4em 0em;
     width: 100%;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease-in-out;
     margin-left: 0;
 }
 
 .article.mainsided {
-    padding: 65px 0em 4em 210px!important;
+    padding: 65px 0em 4em 190px !important;
 }
 
 .article.shifted {
-    margin-left: 212px !important; /* Width of the sidebar */
+    margin-left: 190px !important;
 }
 
 .icon .menuIcon {
@@ -195,7 +217,7 @@ body.nightmode .pusher .ui.divider.noborder {
     z-index: 10;
     top: 57px;
     background: rgb(250, 250, 250);
-    min-width: 212px;
+    min-width: 190px;
 }
 
 #sidebar.mobile.left.sidebar,

@@ -1,34 +1,50 @@
+import { DTubeVersion } from '../../../lib/version';
+
 Template.sidebar.rendered = function() {
     Template.settingsdropdown.nightMode();
     Template.sidebar.selectMenu();
     
     // Ensure sidebar is initialized with the correct context to prevent topbar movement
-    if (/Mobi/.test(navigator.userAgent)) {
-        $("#sidebar")
-            .sidebar('setting', 'context', '#sidebar-context')
-            .sidebar('setting', 'detachable', false)
-            .sidebar('setting', 'transition', 'overlay')
-            .sidebar('setting', 'dimPage', true)
-            .sidebar('setting', 'closable', true);
-    } else {
-        // On desktop, initialize and show the sidebar (half state)
-        Template.sidebar.half();
+    var $context = $('#sidebar-context');
+    if ($context.length > 0) {
+        if (/Mobi/.test(navigator.userAgent)) {
+            $("#sidebar")
+                .sidebar('setting', 'context', $context)
+                .sidebar('setting', 'detachable', false)
+                .sidebar('setting', 'transition', 'overlay')
+                .sidebar('setting', 'dimPage', true)
+                .sidebar('setting', 'closable', true);
+        } else {
+            // On desktop, initialize and show the sidebar based on session state
+            if (Session.get('sidebarOpen') === undefined) {
+                Session.set('sidebarOpen', true);
+            }
+
+            this.autorun(() => {
+                const open = Session.get('sidebarOpen');
+                if (open) {
+                    Meteor.defer(() => Template.sidebar.half());
+                } else {
+                    Template.sidebar.empty();
+                }
+            });
+        }
     }
 }
 
 Template.sidebar.helpers({
-    version: function() {
-        return (typeof DTubeVersion !== 'undefined') ? DTubeVersion : 'dev';
-    }
+        shortCommit: () => {
+            return DTubeVersion.commit.substring(0,7);
+        }
 });
 
 Template.sidebar.events({
     'click .dtubesidebarmenu': function() {
         if (/Mobi/.test(navigator.userAgent)) {
             Template.sidebar.empty()
-        } else {
-            Template.sidebar.half()
         }
+        // On desktop, we rely on the session state to keep it open.
+        // No need to call half() which would re-initialize it.
     },
 })
 
@@ -107,62 +123,45 @@ Template.sidebar.selectMenu = function() {
 }
 
 Template.sidebar.half = function() {
-    // Destroy existing sidebar to ensure clean state and correct context
-    if ($("#sidebar").data('module-sidebar')) {
-        $("#sidebar").sidebar('destroy');
-    }
-    
-    // Ensure context exists, default to body if not found (though it should be there)
-    var context = $('#sidebar-context').length > 0 ? '#sidebar-context' : 'body';
-    
     $("#sidebar")
-        .sidebar('setting', 'context', context)
-        .sidebar('setting', 'detachable', false)
-        .sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
-        .sidebar('setting', 'onChange', function() {
-            // Manual check to toggle content shift class
-            // We use a timeout to let the sidebar state update
-            setTimeout(function() {
-                if ($('#sidebar').sidebar('is visible')) {
-                    $('.article').addClass('shifted');
-                } else {
-                    $('.article').removeClass('shifted');
-                }
-            }, 50);
-        })
+        .sidebar('setting', 'transition', 'push')
+        .sidebar('setting', 'duration', 300)
         .sidebar('show')
 }
 
 Template.sidebar.full = function() {
-    if ($("#sidebar").data('module-sidebar')) {
-        $("#sidebar").sidebar('destroy');
-    }
-
-    var context = $('#sidebar-context').length > 0 ? '#sidebar-context' : 'body';
 
     $("#sidebar")
-        .sidebar('setting', 'context', context)
+        .sidebar('setting', 'context', $context)
         .sidebar('setting', 'detachable', false)
-        .sidebar('setting', 'transition', 'overlay')
+        .sidebar('setting', 'transition', 'push')
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
-        .sidebar('setting', 'onChange', function() {
-            setTimeout(function() {
-                if ($('#sidebar').sidebar('is visible')) {
-                    $('.article').addClass('shifted');
-                } else {
-                    $('.article').removeClass('shifted');
-                }
-            }, 50);
-        })
+        .sidebar('setting', 'duration', 300)
         .sidebar('show')
 }
 
 Template.sidebar.empty = function() {
-    $("#sidebar").sidebar('hide')
-    $('.article').removeClass('shifted');
+    $("#sidebar")
+        .sidebar('setting', 'dimPage', false)
+        .sidebar('setting', 'closable', true)
+        .sidebar('setting', 'duration', 300)
+        .sidebar('hide')
+}
+
+Template.sidebar.toggle = function() {
+    if (Session.get('sidebarOpen') === undefined) {
+        Session.set('sidebarOpen', true);
+    }
+    const open = Session.get('sidebarOpen');
+    Session.set('sidebarOpen', !open);
+    if (open) {
+        Meteor.defer(() => Template.sidebar.half());
+    } else {
+        Template.sidebar.empty();
+    }
 }
 
 Template.sidebar.mobile = function() {
@@ -170,8 +169,11 @@ Template.sidebar.mobile = function() {
         $("#sidebar").sidebar('destroy');
     }
 
+    var $context = $('#sidebar-context');
+    if ($context.length === 0) return;
+
     $("#sidebar")
-        .sidebar('setting', 'context', '#sidebar-context')
+        .sidebar('setting', 'context', $context)
         .sidebar('setting', 'detachable', false)
         .sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', true)

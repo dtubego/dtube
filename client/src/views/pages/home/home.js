@@ -42,8 +42,7 @@ Template.home.rendered = function () {
   Template.settingsdropdown.nightMode();
   if (/Mobi/.test(navigator.userAgent)) {
     Template.sidebar.empty()
-  }
-  else {
-    Template.sidebar.half()
+  } else {
+    Session.set('sidebarOpen', true)
   }
 }
