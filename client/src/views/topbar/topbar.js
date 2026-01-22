@@ -23,8 +23,7 @@ Template.topbar.events({
     Template.sidebar.toggle();
   },
   'touchend .sidebartoggleicon': function (event, instance) {
-    if (Session.get('sidebarOpen') === undefined) Session.set('sidebarOpen', true);
-    Session.set('sidebarOpen', !Session.get('sidebarOpen'));
+    Template.sidebar.toggle();
   },
   'keyup #dsearch': function (evt) {
     if (evt.key == 'Enter') return

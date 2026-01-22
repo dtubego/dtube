@@ -1,17 +1,20 @@
-import { DTubeVersion } from '../../../lib/version';
+import { DTubeVersion } from "/client/lib/version";
 
 Template.sidebar.rendered = function() {
     Template.settingsdropdown.nightMode();
     Template.sidebar.selectMenu();
     
     // Ensure sidebar is initialized with the correct context to prevent topbar movement
-    var $context = $('#sidebar-context');
+    var $context = $('#sidebar');
     if ($context.length > 0) {
         if (/Mobi/.test(navigator.userAgent)) {
+            if (Session.get('sidebarOpen') === undefined) {
+                Session.set('sidebarOpen', true);
+            }
             $("#sidebar")
                 .sidebar('setting', 'context', $context)
                 .sidebar('setting', 'detachable', false)
-                .sidebar('setting', 'transition', 'overlay')
+                .sidebar('setting', 'transition', 'push')
                 .sidebar('setting', 'dimPage', true)
                 .sidebar('setting', 'closable', true);
         } else {
@@ -132,7 +135,7 @@ Template.sidebar.half = function() {
 }
 
 Template.sidebar.full = function() {
-
+    var $context = $('#sidebar');
     $("#sidebar")
         .sidebar('setting', 'context', $context)
         .sidebar('setting', 'detachable', false)
@@ -147,6 +150,7 @@ Template.sidebar.empty = function() {
     $("#sidebar")
         .sidebar('setting', 'dimPage', false)
         .sidebar('setting', 'closable', true)
+        .sidebar('setting', 'transition', 'push')
         .sidebar('setting', 'duration', 300)
         .sidebar('hide')
 }
@@ -168,15 +172,8 @@ Template.sidebar.mobile = function() {
     if ($("#sidebar").data('module-sidebar')) {
         $("#sidebar").sidebar('destroy');
     }
-
-    var $context = $('#sidebar-context');
+    var $context = $('#sidebar');
     if ($context.length === 0) return;
-
-    $("#sidebar")
-        .sidebar('setting', 'context', $context)
-        .sidebar('setting', 'detachable', false)
-        .sidebar('setting', 'transition', 'overlay')
-        .sidebar('setting', 'dimPage', true)
-        .sidebar('setting', 'closable', true)
-        .sidebar('toggle')
+    
+    Template.sidebar.toggle();
 }
