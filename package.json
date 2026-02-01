@@ -16,7 +16,6 @@
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.23.0",
     "bufferutil": "^4.0.1",
-    "caniuse-lite": "^1.0.30001593",
     "cheerio": "^1.0.0-rc.2",
     "cids": "^1.1.9",
     "dtube-autolinker": "1.4.3",
