@@ -40,14 +40,27 @@ function updateVP(type, change) {
 Template.accountsdropdown.rendered = () => {
     $('.dropdownaccounts').dropdown({
         action: (text,value,e) => {
-            if ($(e).hasClass('logOut') && $(e).hasClass('logOutAvalon'))
-                Users.remove({username: Session.get('activeUsername'), network: 'avalon'}, () => Session.set('activeUsername', null))
-            else if ($(e).hasClass('logOut') && $(e).hasClass('logOutHive'))
-                Users.remove({username: Session.get('activeUsernameHive'), network: 'hive'}, () => Session.set('activeUsernameHive', null))
-            else if ($(e).hasClass('logOut') && $(e).hasClass('logOutSteem'))
-                Users.remove({username: Session.get('activeUsernameSteem'), network: 'steem'}, () => Session.set('activeUsernameSteem', null))
-            else if ($(e).hasClass('logOut') && $(e).hasClass('logOutBlurt'))
-                Users.remove({username: Session.get('activeUsernameBlurt'), network: 'blurt'}, () => Session.set('activeUsernameBlurt', null))
+            if ($(e).hasClass('logOut') && $(e).hasClass('logOutAvalon')) {
+                var username = Session.get('activeUsername')
+                Session.set('activeUsername', null)
+                if (username)
+                    Users.remove({username: username, network: 'avalon'})
+            } else if ($(e).hasClass('logOut') && $(e).hasClass('logOutHive')) {
+                var usernameHive = Session.get('activeUsernameHive')
+                Session.set('activeUsernameHive', null)
+                if (usernameHive)
+                    Users.remove({username: usernameHive, network: 'hive'})
+            } else if ($(e).hasClass('logOut') && $(e).hasClass('logOutSteem')) {
+                var usernameSteem = Session.get('activeUsernameSteem')
+                Session.set('activeUsernameSteem', null)
+                if (usernameSteem)
+                    Users.remove({username: usernameSteem, network: 'steem'})
+            } else if ($(e).hasClass('logOut') && $(e).hasClass('logOutBlurt')) {
+                var usernameBlurt = Session.get('activeUsernameBlurt')
+                Session.set('activeUsernameBlurt', null)
+                if (usernameBlurt)
+                    Users.remove({username: usernameBlurt, network: 'blurt'})
+            }
         }
     })
 

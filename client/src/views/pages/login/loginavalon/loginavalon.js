@@ -95,9 +95,8 @@ Template.loginavalon.helpers({
           if (event.target.rememberme.checked === false)
             user.temporary = true
 
-          Users.upsert({_id: user._id}, user, function() {
-            Template.loginavalon.success(user.username,false,isSecurityKey)
-          })
+          Users.upsert({_id: user._id}, user)
+          Template.loginavalon.success(user.username,false,isSecurityKey)
         } else {
           toastr.error(translate('LOGIN_ERROR_AUTHENTIFICATION_FAILED'), translate('ERROR_TITLE'))
         }

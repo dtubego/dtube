@@ -72,25 +72,30 @@ Template.login.events({
   },
   'click .logOut' : (event) => {
     var network = $(event.currentTarget).data('network')
-    if (network == 'dtc')
-      Users.remove({username: Session.get('activeUsername'), network: 'avalon'}, () => {
-        Session.set('activeUsername', null)
-        Template.settingsdropdown.nightMode()
-      })
-    else if (network == 'hive')
-      Users.remove({username: Session.get('activeUsernameHive'), network: 'hive'}, () => {
-        Session.set('activeUsernameHive', null)
-        Template.settingsdropdown.nightMode()
-      })
-    else if (network == 'steem')
-      Users.remove({username: Session.get('activeUsernameSteem'), network: 'steem'}, () => {
-        Session.set('activeUsernameSteem', null)
-        Template.settingsdropdown.nightMode()
-      })
-    else if (network == 'blurt')
-      Users.remove({username: Session.get('activeUsernameBlurt'), network: 'blurt'}, () => {
-        Session.set('activeUsernameBlurt', null)
-        Template.settingsdropdown.nightMode()
-      })
+    if (network == 'dtc') {
+      var username = Session.get('activeUsername')
+      Session.set('activeUsername', null)
+      Template.settingsdropdown.nightMode()
+      if (username)
+        Users.remove({username: username, network: 'avalon'})
+    } else if (network == 'hive') {
+      var usernameHive = Session.get('activeUsernameHive')
+      Session.set('activeUsernameHive', null)
+      Template.settingsdropdown.nightMode()
+      if (usernameHive)
+        Users.remove({username: usernameHive, network: 'hive'})
+    } else if (network == 'steem') {
+      var usernameSteem = Session.get('activeUsernameSteem')
+      Session.set('activeUsernameSteem', null)
+      Template.settingsdropdown.nightMode()
+      if (usernameSteem)
+        Users.remove({username: usernameSteem, network: 'steem'})
+    } else if (network == 'blurt') {
+      var usernameBlurt = Session.get('activeUsernameBlurt')
+      Session.set('activeUsernameBlurt', null)
+      Template.settingsdropdown.nightMode()
+      if (usernameBlurt)
+        Users.remove({username: usernameBlurt, network: 'blurt'})
+    }
   }
 })
