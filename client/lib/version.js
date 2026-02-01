@@ -1,1 +1,1 @@
-export const DTubeVersion = {commit: '6798b535cbfe8bc20952e12ea03409a8e47f6569', branch: 'meteor3', timestamp: '2026-01-20 18:44'};
+export const DTubeVersion = {commit: 'bbc338fb3930568d17d6e9be4aaba167aae71566', branch: 'meteor3', timestamp: '2026-02-01 22:23'};
