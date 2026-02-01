@@ -9,7 +9,8 @@ html, body {
     scroll-behavior: smooth;
 }
 
-#dtube-desktop-topbar {
+#dtube-desktop-topbar,
+#dtube-mobile-topbar {
     transform: none !important;
     -webkit-transform: none !important;
     position: fixed !important;
@@ -17,11 +18,7 @@ html, body {
     left: 0;
     right: 0;
     width: 100%;
-    display: flex;
-    flex: 0;
     z-index: 99999;
-    padding: 0 !important;
-    margin: 0 0px 0 0px !important;
 }
 
 body.pushable, .pushable {

@@ -3,33 +3,26 @@ import { DTubeVersion } from "/client/lib/version";
 Template.sidebar.rendered = function() {
     Template.settingsdropdown.nightMode();
     Template.sidebar.selectMenu();
-    
-    // Ensure sidebar is initialized with the correct context to prevent topbar movement
-    var $context = $('#sidebar-context');
-    if ($context.length > 0) {
-        if (/Mobi/.test(navigator.userAgent)) {
-            $("#sidebar")
-                .sidebar('setting', 'context', $context)
-                .sidebar('setting', 'detachable', false)
-                .sidebar('setting', 'transition', 'overlay')
-                .sidebar('setting', 'dimPage', true)
-                .sidebar('setting', 'closable', true)
-                .sidebar('setting', 'duration', 300);
-        } else {
-            // On desktop, initialize and show the sidebar based on session state
-            if (Session.get('sidebarOpen') === undefined) {
-                Session.set('sidebarOpen', true);
-            }
 
-            this.autorun(() => {
-                const open = Session.get('sidebarOpen');
-                if (open) {
-                    Meteor.defer(() => Template.sidebar.half());
-                } else {
-                    Template.sidebar.empty();
-                }
-            });
+    if (/Mobi/.test(navigator.userAgent)) {
+        $("#sidebar")
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('setting', 'dimPage', true)
+            .sidebar('setting', 'closable', true)
+            .sidebar('setting', 'duration', 300);
+    } else {
+        if (Session.get('sidebarOpen') === undefined) {
+            Session.set('sidebarOpen', true);
         }
+
+        this.autorun(() => {
+            const open = Session.get('sidebarOpen');
+            if (open) {
+                Meteor.defer(() => Template.sidebar.half());
+            } else {
+                Template.sidebar.empty();
+            }
+        });
     }
 }
 
