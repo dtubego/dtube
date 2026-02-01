@@ -4,12 +4,10 @@ Meteor.settings.public = {
     "dfees": 1000,
     "loadLimit": 50,
     "displayNodes": [
-      // "https://snap1.d.tube",
       "https://video.dtube.app",
-      "https://flk-ipfs.xyz/ipfs/",
-      "https://dweb.link/ipfs/",
-      "https://ipfs.io",
+      "https://dweb.link",
       "https://flk-ipfs.xyz",
+      "https://ipfs.io",
       "https://ipfs.infura.io",
       "https://gateway.pinata.cloud",
       "http://127.0.0.1:8080"
@@ -24,7 +22,6 @@ Meteor.settings.public = {
       "https://dtube.fso.ovh",
       "https://avalon.luminade.fun",
       "https://dtube.tekraze.com",
-      "https://avalon.d.tube",
       "http://localhost:3001",
       "https://testnet.dtube.fso.ovh",
     ],

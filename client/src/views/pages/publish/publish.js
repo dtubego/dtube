@@ -288,14 +288,14 @@ Template.publish.events({
                 if (this.type == 'img' && this.ver == 'spr')
                     gw = 'sprite.d.tube'
                 else if (this.type == 'img')
-                gw = 'snap1.d.tube'
+                gw = 'dweb.link'
             else
                 gw = 'gateway.btfs.io'
             if (this.tech == 'IPFS')
                 if (this.type == 'img' && this.ver == 'spr')
                     gw = 'dweb.link'
                 else if (this.type == 'img' || this.type == 'sub')
-                gw = 'snap1.d.tube'
+                gw = 'dweb.link'
             else
                 gw = 'dweb.link'
         }

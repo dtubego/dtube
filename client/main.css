@@ -85,8 +85,8 @@ body.pushable, .pushable {
 }
 
 .ui.overlay.sidebar {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    will-change: transform;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: left, transform;
 }
 
 .ui.push.sidebar {

@@ -5,18 +5,16 @@ Template.sidebar.rendered = function() {
     Template.sidebar.selectMenu();
     
     // Ensure sidebar is initialized with the correct context to prevent topbar movement
-    var $context = $('#sidebar');
+    var $context = $('#sidebar-context');
     if ($context.length > 0) {
         if (/Mobi/.test(navigator.userAgent)) {
-            if (Session.get('sidebarOpen') === undefined) {
-                Session.set('sidebarOpen', true);
-            }
             $("#sidebar")
                 .sidebar('setting', 'context', $context)
                 .sidebar('setting', 'detachable', false)
-                .sidebar('setting', 'transition', 'push')
+                .sidebar('setting', 'transition', 'overlay')
                 .sidebar('setting', 'dimPage', true)
-                .sidebar('setting', 'closable', true);
+                .sidebar('setting', 'closable', true)
+                .sidebar('setting', 'duration', 300);
         } else {
             // On desktop, initialize and show the sidebar based on session state
             if (Session.get('sidebarOpen') === undefined) {
@@ -44,7 +42,7 @@ Template.sidebar.helpers({
 Template.sidebar.events({
     'click .dtubesidebarmenu': function() {
         if (/Mobi/.test(navigator.userAgent)) {
-            Template.sidebar.empty()
+            $("#sidebar").sidebar('hide')
         }
         // On desktop, we rely on the session state to keep it open.
         // No need to call half() which would re-initialize it.
@@ -169,11 +167,5 @@ Template.sidebar.toggle = function() {
 }
 
 Template.sidebar.mobile = function() {
-    if ($("#sidebar").data('module-sidebar')) {
-        $("#sidebar").sidebar('destroy');
-    }
-    var $context = $('#sidebar');
-    if ($context.length === 0) return;
-    
-    Template.sidebar.toggle();
+    $("#sidebar").sidebar('toggle');
 }
