@@ -100,6 +100,7 @@ Videos.getVideosByTags = function(page, tags, days, sort_by, order, maxDuration,
 
 Videos.setLastBlog = function(channel, item) {
     var lastBlogs = Session.get('lastBlogs')
+    if (!lastBlogs) lastBlogs = {}
     lastBlogs[channel] = item
     Session.set('lastBlogs', lastBlogs)
 }
@@ -192,7 +193,7 @@ Videos.getVideosByBlogSteem = function(author, cb) {
         limit: Session.get('remoteSettings').loadLimit,
         truncate_body: 1
     };
-    if (Session.get('lastBlogs')['steem/' + author]) {
+    if (Session.get('lastBlogs') && Session.get('lastBlogs')['steem/' + author]) {
         query.start_author = Session.get('lastBlogs')['steem/' + author].author
         query.start_permlink = Session.get('lastBlogs')['steem/' + author].permlink
     }
@@ -261,7 +262,7 @@ Videos.getVideosByBlogHive = function(author, cb) {
         limit: Session.get('remoteSettings').loadLimit,
         truncate_body: 1
     };
-    if (Session.get('lastBlogs')['hive/' + author]) {
+    if (Session.get('lastBlogs') && Session.get('lastBlogs')['hive/' + author]) {
         query.start_author = Session.get('lastBlogs')['hive/' + author].author
         query.start_permlink = Session.get('lastBlogs')['hive/' + author].permlink
     }
@@ -330,7 +331,7 @@ Videos.getVideosByBlogBlurt = function(author, cb) {
         limit: Session.get('remoteSettings').loadLimit,
         truncate_body: 1
     };
-    if (Session.get('lastBlogs')['blurt/' + author]) {
+    if (Session.get('lastBlogs') && Session.get('lastBlogs')['blurt/' + author]) {
         query.start_author = Session.get('lastBlogs')['blurt/' + author].author
         query.start_permlink = Session.get('lastBlogs')['blurt/' + author].permlink
     }
@@ -397,7 +398,7 @@ Videos.getVideosByBlogAvalon = function(author, cb) {
     var start_author = null
     var start_permlink = null
 
-    if (Session.get('lastBlogs')['dtc/' + author]) {
+    if (Session.get('lastBlogs') && Session.get('lastBlogs')['dtc/' + author]) {
         start_author = Session.get('lastBlogs')['dtc/' + author].author
         start_permlink = Session.get('lastBlogs')['dtc/' + author].link
     }
