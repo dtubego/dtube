@@ -6,10 +6,10 @@ Videos = new Mongo.Collection(null)
 Videos.refreshBlockchain = function(cb) {
     var nbCompleted = 0;
     var returnFn = function() {
-        if (! Session.get("initialized") && Session.get('lastHot') && Session.get('lastTrending') && Session.get('lastCreated')) {
-            console.log("hot: "+Session.get('lastHot'))
-            console.log("trending: "+Session.get('lastTrending'))
-            console.log("created: "+Session.get('lastCreated'))
+        if (!Session.get("initialized") && Session.get('lastHot') && Session.get('lastTrending') && Session.get('lastCreated')) {
+            console.log("hot: " + Session.get('lastHot'))
+            console.log("trending: " + Session.get('lastTrending'))
+            console.log("created: " + Session.get('lastCreated'))
             console.log("Loaded video data")
             Session.set("initialized", true)
             BlazeLayout.reset()
@@ -18,8 +18,10 @@ Videos.refreshBlockchain = function(cb) {
                 nav: "nav",
             })
             cb()
-        } else if (! Session.get("initialized") ) {
-            Videos.refreshBlockchain(cb)
+        } else if (!Session.get("initialized")) {
+            setTimeout(function() {
+                Videos.refreshBlockchain(cb)
+            }, 1000)
         }
     }
     if (!Session.get('lastHot'))
@@ -468,25 +470,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             if (!Session.get('scot'))
                 avalon.getTrendingDiscussions(lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastTrending', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i])
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByTrending'
-                            videos[i]._id += 't'
-                            try {
-                                if (videos[i].json.videoId != "E_5BFKXVIXU")
-                                    Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, Videos.parseFromChain, 'chainByTrending', 't', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -495,24 +480,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             else
                 Scot.getDiscussionsBy('trending', limit, lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastTrending', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i], false, 'steem')
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByTrending'
-                            videos[i]._id += 't'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, function(video) { return Videos.parseFromChain(video, false, 'steem') }, 'chainByTrending', 't', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -530,24 +499,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             if (!Session.get('scot'))
                 avalon.getHotDiscussions(lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastHot', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i])
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByHot'
-                            videos[i]._id += 'h'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, Videos.parseFromChain, 'chainByHot', 'h', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -556,24 +509,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             else
                 Scot.getDiscussionsBy('hot', limit, lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastHot', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i], false, 'steem')
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByHot'
-                            videos[i]._id += 'h'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, function(video) { return Videos.parseFromChain(video, false, 'steem') }, 'chainByHot', 'h', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -590,24 +527,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             if (!Session.get('scot'))
                 avalon.getNewDiscussions(lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastCreated', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i])
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByCreated'
-                            videos[i]._id += 'c'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, Videos.parseFromChain, 'chainByCreated', 'c', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -616,24 +537,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             else
                 Scot.getDiscussionsBy('created', limit, lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastCreated', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i], false, 'steem')
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByCreated'
-                            videos[i]._id += 'c'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, function(video) { return Videos.parseFromChain(video, false, 'steem') }, 'chainByCreated', 'c', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -650,24 +555,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             if (!Session.get('scot'))
                 avalon.getP2PVideos(lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastCreated', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i])
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'p2pvideos'
-                            videos[i]._id += 'c'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, Videos.parseFromChain, 'p2pvideos', 'c', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -676,24 +565,8 @@ Videos.getVideosBy = async function(type, limit, cb) {
             else
                 Scot.getDiscussionsBy('created', limit, lastAuthor, lastLink, function(err, result) {
                     if (err === null || err === '') {
-                        Session.set('lastCreated', result[result.length - 1])
-                        var i, len = result.length;
-                        var videos = []
-                        for (i = 0; i < len; i++) {
-                            var video = Videos.parseFromChain(result[i], false, 'steem')
-                            if (video) videos.push(video)
-                        }
-                        for (var i = 0; i < videos.length; i++) {
-                            videos[i].source = 'chainByCreated'
-                            videos[i]._id += 'c'
-                            try {
-                                Videos.upsert({ _id: videos[i]._id }, videos[i])
-                            } catch (err) {
-                                console.log(err)
-                                cb(err)
-                            }
-                        }
-                        cb(null)
+                        var videos = Videos.parseFeed(result, function(video) { return Videos.parseFromChain(video, false, 'steem') }, 'chainByCreated', 'c', limit)
+                        cb(null, videos.finished)
                     } else {
                         console.log(err);
                         cb(err)
@@ -731,6 +604,46 @@ Videos.getVideosBy = async function(type, limit, cb) {
     }
 }
 
+Videos.parseFeed = function(result, parseFn, source, suffix, limit, lastItem) {
+    if (!Array.isArray(result) || result.length === 0) return { finished: true }
+    if (limit && result.length < limit) {
+        Videos.insertFeed(result, parseFn, source, suffix)
+        return { finished: true }
+    }
+    Videos.insertFeed(result, parseFn, source, suffix)
+    return { finished: false }
+}
+
+Videos.insertFeed = function(result, parseFn, source, suffix) {
+    if (!Array.isArray(result) || result.length === 0) return
+    Videos.setLastItem(source, result[result.length - 1])
+    var videos = []
+    for (var i = 0; i < result.length; i++) {
+        var video = parseFn(result[i])
+        if (video) videos.push(video)
+    }
+    for (var i = 0; i < videos.length; i++) {
+        videos[i].source = source
+        videos[i]._id += suffix
+        try {
+            Videos.upsert({ _id: videos[i]._id }, videos[i])
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+
+Videos.setLastItem = function(source, item) {
+    if (!source || !item) return
+    var key
+    if (source.indexOf('chainByFeed') === 0) {
+        key = 'lastFeed' + source.substring('chainByFeed-'.length)
+    } else {
+        key = 'last' + source.charAt(source.indexOf('By') + 2).toUpperCase() + source.substring(source.indexOf('By') + 3)
+    }
+    Session.set(key, item)
+}
+
 Videos.loadFeed = function(username, loadNotifs = true, cb) {
     if (loadNotifs)
         Notifications.getDecentralized()
@@ -744,28 +657,14 @@ Videos.loadFeed = function(username, loadNotifs = true, cb) {
 
     avalon.getFeedDiscussions(username, lastAuthor, lastLink, function(err, result) {
         if (err === null || err === '') {
-            Session.set('lastFeed'+username, result[result.length - 1])
-            var i, len = result.length;
-            var videos = []
-            for (i = 0; i < len; i++) {
-                //console.log(result[i].author, result[i].reblogged_by)
-                var video = Videos.parseFromChain(result[i])
-                if (!video) continue;
-                videos.push(video)
-            }
-            for (var i = 0; i < videos.length; i++) {
-                videos[i].source = 'chainByFeed-' + username
-                videos[i]._id += 'f'
-                try {
-                    Videos.upsert({ _id: videos[i]._id }, videos[i])
-                } catch (err) {
-                    console.log(err)
-                }
-            }
+            var videos = Videos.parseFeed(result, function(video) {
+                return Videos.parseFromChain(video)
+            }, 'chainByFeed-' + username, 'f', null)
+            if (cb) cb(null, videos.finished)
         } else {
             console.log(err);
+            if (cb) cb(err)
         }
-        if (cb) cb()
     });
 }
 

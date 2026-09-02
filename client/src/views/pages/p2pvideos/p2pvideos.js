@@ -7,14 +7,22 @@ Template.p2pvideos.helpers({
 })
 
 Template.p2pvideos.rendered = function () {
+  var loading = false
+  var finished = false
   $('.ui.infinite')
     .visibility({
       once: false,
       observeChanges: true,
       onBottomVisible: function () {
+        if (loading || finished) return
+        loading = true
         $('.ui.infinite .loader').show()
-        Videos.getVideosBy('p2pvideos', 50, function (err) {
+        Videos.getVideosBy('p2pvideos', 50, function (err, end) {
+          loading = false
           if (err) console.log(err)
+          if (end) {
+            finished = true
+          }
           $('.ui.infinite .loader').hide()
         })
       }
