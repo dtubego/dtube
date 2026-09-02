@@ -606,22 +606,39 @@ Videos.getVideosBy = async function(type, limit, cb) {
 
 Videos.parseFeed = function(result, parseFn, source, suffix, limit, lastItem) {
     if (!Array.isArray(result) || result.length === 0) return { finished: true }
-    if (limit && result.length < limit) {
-        Videos.insertFeed(result, parseFn, source, suffix)
-        return { finished: true }
-    }
-    Videos.insertFeed(result, parseFn, source, suffix)
-    return { finished: false }
-}
-
-Videos.insertFeed = function(result, parseFn, source, suffix) {
-    if (!Array.isArray(result) || result.length === 0) return
     Videos.setLastItem(source, result[result.length - 1])
     var videos = []
     for (var i = 0; i < result.length; i++) {
         var video = parseFn(result[i])
         if (video) videos.push(video)
     }
+    var before = Videos.countVisible(source)
+    Videos.insertParsed(source, suffix, videos)
+    var after = Videos.countVisible(source)
+    // We must never get stuck refetching the same cursor page over and over:
+    // the API can return a full page whose items are all filtered out (DMCA,
+    // json.hide, nsfw, censored, invalid...) leaving the visible list unchanged.
+    // If no *visible* video was added to the feed, or the feed is not long
+    // enough to fill the page, tell the caller that scrolling is exhausted.
+    var finished = true
+    if (after > before) {
+        if (limit && after >= limit) {
+            // plenty of visible items: keep paging until we hit the bottom edge
+            if (Videos.isFeedFull()) finished = false
+        } else if (limit && result.length >= limit) {
+            // full API page but the visible feed is still short: keep paging
+            // to try and find more visible videos
+            finished = false
+        }
+    }
+    return { finished: finished }
+}
+
+Videos.countVisible = function(source) {
+    try { return Videos.find({ source: source, 'json.hide': { $ne: 1 } }).count() } catch (e) { return 0 }
+}
+
+Videos.insertParsed = function(source, suffix, videos) {
     for (var i = 0; i < videos.length; i++) {
         videos[i].source = source
         videos[i]._id += suffix
@@ -630,6 +647,18 @@ Videos.insertFeed = function(result, parseFn, source, suffix) {
         } catch (err) {
             console.log(err)
         }
+    }
+}
+
+Videos.isFeedFull = function() {
+    // We only need to keep paging while the visible feed does not yet fill
+    // the viewport. Dedicated listing pages (.ui.infinite) are only "full"
+    // once their content is taller than the window.
+    try {
+        var $el = $('.ui.infinite')
+        return $el.length === 0 || $el[0].offsetHeight > window.innerHeight
+    } catch (e) {
+        return true
     }
 }
 

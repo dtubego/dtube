@@ -9,6 +9,7 @@ Template.channel.rendered = function() {
     $('.ui.bottom.attached.tab.' + Session.get('currentTab')).addClass('active');
 
     Session.set('relatedChannels', [])
+    Template.channel._lastBlogCursor = null
 
     Template.sidebar.selectMenu();
     Template.settingsdropdown.nightMode();
@@ -39,8 +40,19 @@ Template.channel.rendered = function() {
 }
 
 Template.channel.loadMore = function() {
+    var author = FlowRouter.getParam("author")
     $('.ui.infinite .loader').show()
-    Videos.getVideosByBlog(FlowRouter.getParam("author"), 50, function(err, finished) {
+    var lastBlogs = Session.get('lastBlogs') || {}
+    var cursor = lastBlogs['dtc/' + author]
+    if (cursor && Template.channel._lastBlogCursor && cursor.author === Template.channel._lastBlogCursor.author && cursor.link === Template.channel._lastBlogCursor.link) {
+        // Same cursor as the previous request: the API returned nothing new
+        // (or everything was filtered out). Stop refetching to avoid freezing
+        // the page with an endless loop.
+        $('.ui.infinite .loader').hide()
+        return
+    }
+    Template.channel._lastBlogCursor = cursor
+    Videos.getVideosByBlog(author, 50, function(err, finished) {
         if (err) console.log(err)
         $('.ui.infinite .loader').hide()
         if (!err && $('.ui.infinite').height() < window.outerHeight && !finished)
