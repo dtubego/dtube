@@ -60,7 +60,11 @@ Template.loginavalon.helpers({
         return
       }
       avalon.getAccount(username, function(err, chainuser) {
-        if (err) console.log(err)
+        if (err) {
+          console.log(err)
+          toastr.error(translate('LOGIN_ERROR_API_FAILED') || 'Impossibile contattare la rete Avalon. Riprova più tardi.', translate('ERROR_TITLE'))
+          return
+        }
         if (!chainuser) {
           toastr.error(translate('LOGIN_ERROR_UNKNOWN_USERNAME'), translate('ERROR_TITLE'))
           return

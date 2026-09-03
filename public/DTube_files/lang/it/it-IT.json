@@ -121,6 +121,7 @@
     "LOGIN_OTHER_NETWORK": "Accedi con un altra rete",
     "LOGIN_ERROR_EMPTY_USERNAME_POSTING_KEY": "Per favore inserisci entrambi nome-utente e chiave privata di pubblicazione per accedere",
     "LOGIN_ERROR_UNKNOWN_USERNAME": "Nome-utente inesistente",
+    "LOGIN_ERROR_API_FAILED": "Impossibile contattare la rete. Riprova più tardi.",
     "LOGIN_ERROR_WRONG_POSTING_KEY": "Chiave Privata di Pubblicazione errata",
     "LOGIN_ERROR_AUTHENTIFICATION_FAILED": "Nome-utente e Chiave Privata di Pubblicazione non riconosciuti",
     "LOGIN_ERROR_ALREADY_LOGGED": "Sei gia registrato con questo account",

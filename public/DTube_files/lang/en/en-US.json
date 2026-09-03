@@ -153,6 +153,7 @@
     "LOGIN_OTHER_NETWORK": "Login with another network",
     "LOGIN_ERROR_EMPTY_USERNAME_POSTING_KEY": "Please fill both username and private posting key to login",
     "LOGIN_ERROR_UNKNOWN_USERNAME": "Username does not exist",
+    "LOGIN_ERROR_API_FAILED": "Cannot reach the network. Please try again later.",
     "LOGIN_ERROR_WRONG_POSTING_KEY": "Private Posting Key is wrong",
     "LOGIN_ERROR_AUTHENTIFICATION_FAILED": "Username and Private Posting Key do not match",
     "LOGIN_ERROR_ALREADY_LOGGED": "You are already logged with this account",

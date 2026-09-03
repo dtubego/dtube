@@ -29,13 +29,16 @@ Template.trendingvideos.rendered = function () {
         $('.ui.infinite .loader').show()
         Videos.getVideosBy('trending', 50, function(err, end){
           loading = false
-          if (err) console.log(err)
-          if (end) {
+          if (err) {
+            console.log(err)
             finished = true
             $('.ui.infinite .loader').hide()
-          } else {
-            $('.ui.infinite .loader').hide()
+            return
           }
+          if (end) {
+            finished = true
+          }
+          $('.ui.infinite .loader').hide()
         })
       }
     });

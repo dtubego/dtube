@@ -3,7 +3,10 @@ import xss from 'xss'
 const time_to_claim = 1000 * 60 * 60 * 24 * 7
 Videos = new Mongo.Collection(null)
 
-Videos.refreshBlockchain = function(cb) {
+Videos.refreshBlockchain = function(cb, _retryCount) {
+    var retryCount = _retryCount || 0;
+    var maxRetries = 5;
+    var feedsAttempted = { hot: false, trending: false, created: false };
     var nbCompleted = 0;
     var returnFn = function() {
         if (!Session.get("initialized") && Session.get('lastHot') && Session.get('lastTrending') && Session.get('lastCreated')) {
@@ -18,24 +21,46 @@ Videos.refreshBlockchain = function(cb) {
                 nav: "nav",
             })
             cb()
-        } else if (!Session.get("initialized")) {
+        } else if (!Session.get("initialized") && feedsAttempted.hot && feedsAttempted.trending && feedsAttempted.created) {
+            if (retryCount >= maxRetries || Session.get('lastCreated')) {
+                if (!Session.get('lastHot')) Session.set('lastHot', { author: '', link: '' })
+                if (!Session.get('lastTrending')) Session.set('lastTrending', { author: '', link: '' })
+                console.log("refreshBlockchain: proceeding with available data (hot=" + !!Session.get('lastHot') + " trending=" + !!Session.get('lastTrending') + " created=" + !!Session.get('lastCreated') + ")")
+                Session.set("initialized", true)
+                BlazeLayout.reset()
+                BlazeLayout.render('masterLayout', {
+                    main: "home",
+                    nav: "nav",
+                })
+                cb()
+                return
+            }
             setTimeout(function() {
-                Videos.refreshBlockchain(cb)
+                Videos.refreshBlockchain(cb, retryCount + 1)
             }, 1000)
         }
     }
     if (!Session.get('lastHot'))
         Videos.getVideosBy('hot', null, function() {
+            feedsAttempted.hot = true
             returnFn()
         })
+    else
+        feedsAttempted.hot = true
     if (!Session.get('lastTrending'))
         Videos.getVideosBy('trending', null, function() {
+            feedsAttempted.trending = true
             returnFn()
         })
+    else
+        feedsAttempted.trending = true
     if (!Session.get('lastCreated'))
         Videos.getVideosBy('created', null, function() {
+            feedsAttempted.created = true
             returnFn()
         })
+    else
+        feedsAttempted.created = true
 }
 
 Videos.getVideosRelatedTo = function(id, author, link, days, cb) {

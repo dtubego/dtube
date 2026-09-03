@@ -99,6 +99,11 @@ Template.loginsteem.helpers({
         return
       }
       steem.api.getAccounts([username], function(err, result) {
+        if (err) {
+          console.log(err)
+          toastr.error(translate('LOGIN_ERROR_API_FAILED') || 'Impossibile contattare la rete Steem. Riprova più tardi.', translate('ERROR_TITLE'))
+          return
+        }
         if (!result || result.length < 1) {
           toastr.error(translate('LOGIN_ERROR_UNKNOWN_USERNAME'), translate('ERROR_TITLE'))
           return
